@@ -1,0 +1,22 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+.account {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.accounthome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 25px;
+  justify-content: center;
+}
