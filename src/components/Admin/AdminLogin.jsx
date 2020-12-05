@@ -17,7 +17,7 @@ import { MIN_USERNAME_LENGTH, MIN_PASSWORD_LENGTH } from "./../../config";
 import users from "./../../data/users";
 import { Alert } from "@material-ui/lab";
 import { Snackbar } from "@material-ui/core";
-
+// import Adminuser from "./Adminuser";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "75%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {

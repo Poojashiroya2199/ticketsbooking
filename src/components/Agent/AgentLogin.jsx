@@ -10,8 +10,14 @@ import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+// import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
+import authService from "./../../service/authService";
+import { MIN_USERNAME_LENGTH, MIN_PASSWORD_LENGTH } from "./../../config";
+import agents from "./../../data/agents";
+import { Alert } from "@material-ui/lab";
+import { Snackbar } from "@material-ui/core";
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -26,6 +32,12 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -37,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "75%", // Fix IE 11 issue.
     marginTop: theme.spacing(1)
   },
   submit: {
@@ -45,11 +57,70 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AgentLogin() {
+export default function AdminLogin(props) {
   const classes = useStyles();
+  const [account, setAccount] = React.useState({ username: "", password: "" });
+  const [error, setError] = React.useState({ username: "", password: "" });
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  const handleChange = (property, event) => {
+    const accountCopy = {
+      ...account
+    };
+    accountCopy[property] = event.target.value;
+    setAccount(accountCopy);
+    validate(property);
+  };
+
+  const validate = (property) => {
+    property === "username" ? validateUsername() : validatePassword();
+  };
+
+  const handleLogin = () => {
+    if (isValidUser(account.username, account.password)) {
+      authService.doLogin(account.username);
+      props.history.push("/agentuser");
+    } else {
+      setOpen(true);
+    }
+  };
+  const isValidUser = (username, password) => {
+    return agents.find(
+      (user) => user.username === username && user.password === password
+    );
+  };
+
+  const validateUsername = () => {
+    const errorCopy = { ...error };
+    if (account.username.includes(" ")) {
+      errorCopy.username = "Username cannot contain a space";
+    } else if (account.username.length < MIN_USERNAME_LENGTH) {
+      errorCopy.username = `Username should be greater than ${MIN_USERNAME_LENGTH} chars`;
+    } else {
+      errorCopy.username = "";
+    }
+
+    setError(errorCopy);
+  };
+
+  const validatePassword = () => {
+    const errorCopy = { ...error };
+    if (account.password.length < MIN_PASSWORD_LENGTH) {
+      errorCopy.password = `Password should be greater than ${MIN_PASSWORD_LENGTH} chars`;
+    } else {
+      errorCopy.password = "";
+    }
+    setError(errorCopy);
+  };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Grid Container component="main" className={classes.root}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -60,14 +131,17 @@ export default function AgentLogin() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
+            value={account.username}
+            onChange={(event) => handleChange("username", event)}
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            error={error.username}
+            helperText={error.username}
+            id="username"
+            label="Username"
+            name="username"
             autoFocus
           />
           <TextField
@@ -77,10 +151,15 @@ export default function AgentLogin() {
             fullWidth
             name="password"
             label="Password"
+            error={error.password}
+            helperText={error.password}
             type="password"
             id="password"
             autoComplete="current-password"
+            value={account.password}
+            onChange={(event) => handleChange("password", event)}
           />
+
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -91,21 +170,20 @@ export default function AgentLogin() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleLogin}
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-          </Grid>
         </form>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          Incorrect username or password
+        </Alert>
+      </Snackbar>
+    </Grid>
   );
 }

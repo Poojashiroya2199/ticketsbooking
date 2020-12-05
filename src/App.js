@@ -7,6 +7,7 @@ import AdminSignup from "./components/Admin/AdminSignup";
 import AgentLogin from "./components/Agent/AgentLogin";
 import Home from "./components/Home";
 import Adminuser from "./components/Admin/Adminuser";
+import Agentuser from "./components/Agent/Agentuser";
 export default function App() {
   return (
     <>
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/adminuser" exact component={Adminuser} />
         <Route path="/adminsignup" exact component={AdminSignup} />
         <Route path="/agentlogin" exact component={AgentLogin} />
+        <Route path="/agentuser" exact component={Agentuser} />
         <Route path="/home" component={Home} />
         <Redirect to="/home" />
       </Switch>
