@@ -17,7 +17,7 @@ import { MIN_USERNAME_LENGTH, MIN_PASSWORD_LENGTH } from "./../../config";
 import users from "./../../data/users";
 import { Alert } from "@material-ui/lab";
 import { Snackbar } from "@material-ui/core";
-// import Adminuser from "./Adminuser";
+import Adminuser from "./Adminuser";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AdminLogin(props) {
+  if (authService.isLoggedIn()) {
+    props.history.push("/adminuser");
+  }
   const classes = useStyles();
   const [account, setAccount] = React.useState({ username: "", password: "" });
   const [error, setError] = React.useState({ username: "", password: "" });

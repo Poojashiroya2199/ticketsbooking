@@ -13,10 +13,16 @@ export default function App() {
     <>
       <Switch>
         <Route path="/adminlogin" exact component={AdminLogin} />
-        <Route path="/adminuser" exact component={Adminuser} />
+        <Route
+          path="/adminuser"
+          render={(props) => <Adminuser display={true} {...props} />}
+        />
         <Route path="/adminsignup" exact component={AdminSignup} />
         <Route path="/agentlogin" exact component={AgentLogin} />
-        <Route path="/agentuser" exact component={Agentuser} />
+        <Route
+          path="/agentuser"
+          render={(props) => <Agentuser display={true} {...props} />}
+        />
         <Route path="/home" component={Home} />
         <Redirect to="/home" />
       </Switch>

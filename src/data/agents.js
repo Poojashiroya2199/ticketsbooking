@@ -8,7 +8,8 @@ const agentusers = [
     phonenumber: "1234567890",
     address: "vrajchok,surat",
     agency: "shiroya",
-    allotedseats: "20"
+    allotedseats: "20",
+    email: "poojashiroya99@gmail.com"
   },
   {
     username: "priti",
@@ -19,7 +20,8 @@ const agentusers = [
     phonenumber: "0258147369",
     address: "jakatnaka,surat",
     agency: "shahni",
-    allotedseats: "25"
+    allotedseats: "25",
+    email: "pritisahni99@gmail.com"
   },
   {
     username: "sanji",
@@ -30,7 +32,8 @@ const agentusers = [
     phonenumber: "3698520147",
     address: "baroda,gujarat",
     agency: "kumar",
-    allotedseats: "15"
+    allotedseats: "15",
+    email: "sanjikumar99@gmail.com"
   }
 ];
 

@@ -10,7 +10,7 @@ const isLoggedIn = () => {
 const handleLogout = (props) => {
   localStorage.removeItem("username");
   localStorage.removeItem("isLoggedIn");
-  props.history.push("/adminlogin");
+  props.history.push("/home");
 };
 
 export default {
