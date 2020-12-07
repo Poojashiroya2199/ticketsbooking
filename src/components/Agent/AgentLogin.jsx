@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-
 export default function AdminLogin(props) {
   if (authService.isLoggedIn()) {
     props.history.push("/agentuser");

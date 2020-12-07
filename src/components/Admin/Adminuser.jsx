@@ -13,9 +13,12 @@ import AddIcon from "@material-ui/icons/Add";
 import agentusers from "./../../data/agents";
 import UserCard from "./../../Card";
 import authService from "./../../service/authService";
-import Link from "react-router-dom";
+// import Link from "react-router-dom";
 import { MIN_USERNAME_LENGTH, MIN_PASSWORD_LENGTH } from "./../../config";
-import Home from "./../Home";
+// import Home from "./../Home";
+
+import emailjs from "emailjs-com";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -45,7 +48,6 @@ export default function Adminuser(props) {
   const handleLogout = () => {
     authService.handleLogout(props);
   };
-  const { username, password } = props;
   const classes = useStyles();
   const [clas, setclas] = useState(true);
 
@@ -80,6 +82,7 @@ export default function Adminuser(props) {
     setclas(!clas);
   };
   const handleLogin = () => {
+    sendEmail("hello", "poojashiroya99@gmail.com", "how are you?");
     if (!isValidUser(account.username, account.password, account.email)) {
       setOpen(true);
     } else {
@@ -218,7 +221,25 @@ export default function Adminuser(props) {
       validateImage();
     }
   };
+  function sendEmail(e) {
+    e.preventDefault(); //This is important, i'm not sure why, but the email won't send without it
 
+    emailjs
+      .sendForm(
+        "service_5q7gahf",
+        "template_v1ghfdj",
+        e.target,
+        "user_NNFXJnX7uqsEYr2EVZ5tK"
+      )
+      .then(
+        (result) => {
+          window.location.reload(); //This is if you still want the page to reload (since e.preventDefault() cancelled that behavior)
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  }
   return (
     <>
       <Fab color="primary" aria-label="add" onClick={handledisplay}>
@@ -229,150 +250,152 @@ export default function Adminuser(props) {
       </Button>
 
       <Box className={clas ? classes.displayblock : classes.displaydiv}>
-        <FormControl>
-          <TextField
-            value={account.username}
-            onChange={(event) => handleChange("username", event)}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            error={error.username}
-            helperText={error.username}
-            id="username"
-            label="Username"
-            name="username"
-            autoFocus
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            error={error.password}
-            helperText={error.password}
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={account.password}
-            onChange={(event) => handleChange("password", event)}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="EmailId"
-            label="EmailId"
-            error={error.email}
-            helperText={error.email}
-            type="email"
-            id="email"
-            autoComplete="current-email"
-            value={account.email}
-            onChange={(event) => handleChange("email", event)}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="MobileNumber"
-            label="Mobile No."
-            error={error.phonenum}
-            helperText={error.phonenum}
-            type="number"
-            id="number"
-            autoComplete="current-num"
-            value={account.phonenum}
-            onChange={(event) => handleChange("phonenum", event)}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="DOB"
-            label="DOB"
-            error={error.dob}
-            helperText={error.dob}
-            type="text"
-            id="dob"
-            autoComplete="current-dob"
-            value={account.dob}
-            onChange={(event) => handleChange("dob", event)}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="address"
-            label="Address"
-            error={error.addree}
-            helperText={error.address}
-            type="text"
-            id="address"
-            autoComplete="current-address"
-            value={account.address}
-            onChange={(event) => handleChange("address", event)}
-          />
-        </FormControl>
+        <form onSubmit={sendEmail}>
+          <FormControl>
+            <TextField
+              value={account.username}
+              onChange={(event) => handleChange("username", event)}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              error={error.username}
+              helperText={error.username}
+              id="username"
+              label="Username"
+              name="username"
+              autoFocus
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              error={error.password}
+              helperText={error.password}
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={account.password}
+              onChange={(event) => handleChange("password", event)}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="EmailId"
+              label="EmailId"
+              error={error.email}
+              helperText={error.email}
+              type="email"
+              id="email"
+              autoComplete="current-email"
+              value={account.email}
+              onChange={(event) => handleChange("email", event)}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="MobileNumber"
+              label="Mobile No."
+              error={error.phonenum}
+              helperText={error.phonenum}
+              type="number"
+              id="number"
+              autoComplete="current-num"
+              value={account.phonenum}
+              onChange={(event) => handleChange("phonenum", event)}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="DOB"
+              label="DOB"
+              error={error.dob}
+              helperText={error.dob}
+              type="text"
+              id="dob"
+              autoComplete="current-dob"
+              value={account.dob}
+              onChange={(event) => handleChange("dob", event)}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="address"
+              label="Address"
+              error={error.addree}
+              helperText={error.address}
+              type="text"
+              id="address"
+              autoComplete="current-address"
+              value={account.address}
+              onChange={(event) => handleChange("address", event)}
+            />
+          </FormControl>
 
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="seats"
-            label="Alloted seats"
-            error={error.seats}
-            helperText={error.seats}
-            type="number"
-            id="seat"
-            autoComplete="current-seat"
-            value={account.seats}
-            onChange={(event) => handleChange("seats", event)}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="url"
-            label="Profile link"
-            error={error.image}
-            helperText={error.image}
-            type="text"
-            id="image"
-            autoComplete="current-image"
-            value={account.image}
-            onChange={(event) => handleChange("image", event)}
-          />
-        </FormControl>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleLogin}
-          className={classes.submit}
-        >
-          submit
-        </Button>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="seats"
+              label="Alloted seats"
+              error={error.seats}
+              helperText={error.seats}
+              type="number"
+              id="seat"
+              autoComplete="current-seat"
+              value={account.seats}
+              onChange={(event) => handleChange("seats", event)}
+            />
+          </FormControl>
+          <FormControl>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="url"
+              label="Profile link"
+              error={error.image}
+              helperText={error.image}
+              type="text"
+              id="image"
+              autoComplete="current-image"
+              value={account.image}
+              onChange={(event) => handleChange("image", event)}
+            />
+          </FormControl>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleLogin}
+            className={classes.submit}
+          >
+            submit
+          </Button>
+        </form>
       </Box>
       <Box display="flex">
         {agentusers.map((el) => (
